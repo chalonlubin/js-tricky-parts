@@ -1,44 +1,43 @@
 "use strict";
 
-function createAccount(pin, initialAmount) {
-  let amount = initialAmount;
+function createAccount(pin, amount) {
+
+  const invalid = "Invalid PIN."
 
   // helper function to check pin
   function checkPin(inputPin) {
-    if (inputPin !== pin) {
-      throw new Error("Invalid PIN.");
-    }
+    return inputPin === pin
   }
+
 
   // utilize closure
   return {
     checkBalance(inputPin) {
-      checkPin(inputPin);
-      return amount;
+      return checkPin(inputPin) ? `$${amount}` : invalid;
     },
     deposit(inputPin, amt) {
-      checkPin(inputPin);
+      if (!checkPin(inputPin)) return invalid;
       amount += amt;
-      return `Successfully deposited ${amt}, your new total is ${amount}`;
+      return `Succesfully deposited $${amt}. Current balance: $${amount}.`;
     },
     withdraw(inputPin, amt) {
-      checkPin(inputPin);
+      if (!checkPin(inputPin)) return invalid;
       if (amount - amt >= 0) {
         amount -= amt;
-        return `Successfully withdrew ${amt}, your new total is ${amount}`;
+        return `Succesfully withdrew $${amt}. Current balance: $${amount}`;
       } else {
         return "Withdrawal amount exceeds account balance. Transaction cancelled.";
       }
     },
     changePin(inputPin, newPin) {
-      checkPin(inputPin);
+      if (!checkPin(inputPin)) return invalid;
       pin = newPin;
-      return "PIN successfully changed!";
+      return "PIN succesfully changed!";
     },
   };
 }
 
-let account = createAccount("1234", 100);
-console.log(account.checkBalance("1234"));
+
+crea
 
 module.exports = { createAccount };
